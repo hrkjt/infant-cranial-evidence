@@ -29,8 +29,8 @@ jobs:
           GOOGLE_DOC_ID: ${{ vars.GOOGLE_DOC_ID || '10urKQXlpjne33hfY7R_MbwpwKkeesQXQsIpwDn-e_c0' }}
           GOOGLE_SHEET_ID: ${{ vars.GOOGLE_SHEET_ID || '1cfTCAXQ2Bu_j1yn_7BkroMqfxlCzwGO2Rn_wvp6uWrQ' }}
         run: python scripts/sync_drive.py
-      - name: Build site
-        run: python scripts/build_site.py
+      - name: Summarize source changes
+        run: python scripts/review_summary.py
       - name: Propose verified changes
         uses: peter-evans/create-pull-request@v7
         with:
@@ -39,10 +39,7 @@ jobs:
           branch: automation/google-drive-sync
           delete-branch: true
           title: "Update evidence textbook and literature database"
-          body: |
-            Automated import from configured Google Docs and Sheets.
-            Please review clinical claims, citations and changes before merge.
+          body-path: REVIEW_SUMMARY.md
           add-paths: |
             textbook/
             literature/
-            site/
