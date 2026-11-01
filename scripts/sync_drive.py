@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """Sync Google Doc and Sheets Papers tab into chapter Markdown/CSV files."""
 import os,io,csv,re,pathlib
-from google.oauth2 import service_account
+import google.auth
 from googleapiclient.discovery import build
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DOC=os.getenv('GOOGLE_DOC_ID','10urKQXlpjne33hfY7R_MbwpwKkeesQXQsIpwDn-e_c0')
 SHEET=os.getenv('GOOGLE_SHEET_ID','1cfTCAXQ2Bu_j1yn_7BkroMqfxlCzwGO2Rn_wvp6uWrQ')
-cred_file=os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-cred=service_account.Credentials.from_service_account_file(cred_file,scopes=['https://www.googleapis.com/auth/drive.readonly','https://www.googleapis.com/auth/spreadsheets.readonly'])
+cred,_=google.auth.default(scopes=['https://www.googleapis.com/auth/drive.readonly','https://www.googleapis.com/auth/spreadsheets.readonly'])
 drive=build('drive','v3',credentials=cred,cache_discovery=False)
 sheets=build('sheets','v4',credentials=cred,cache_discovery=False)
 raw=drive.files().export(fileId=DOC,mimeType='text/plain').execute()
