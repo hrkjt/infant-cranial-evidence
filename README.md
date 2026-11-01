@@ -14,10 +14,10 @@ AIエージェントが生成する乳児頭蓋変形の文献統合テキスト
 
 1. 新しい**公開リポジトリ**を作成し、このフォルダの内容をコミットする（既存の医療データ用リポジトリに混ぜない）。
 2. Google CloudでDrive APIを有効化しサービスアカウントを作成。対象のGoogle Doc/Sheetをサービスアカウントのメールへ閲覧共有する。
-3. GitHub Actions secret `GOOGLE_SERVICE_ACCOUNT_JSON` にサービスアカウント鍵JSONを登録（鍵はリポジトリへ保存しない）。
+3. Google Cloud Workload Identity Federationを設定し、GitHub Actions Variablesに `GCP_PROJECT_ID`, `GCP_SERVICE_ACCOUNT`, `GCP_WORKLOAD_IDENTITY_PROVIDER` を登録する。JSON秘密鍵は不要。
 4. Repository Settings → Actions → General → Workflow permissions でPR作成に必要な権限を設定する。組織のポリシーが許す場合に限る。
 5. Settings → Pages → Build and deployment → Source を `GitHub Actions` にする。
 6. Actionsの `Sync from Google Drive` を手動実行し、作成されたPRを確認・マージする。
 7. 定期実行は毎日 01:00 UTC（10:00 JST）。GitHub Actionsのscheduleは遅延・スキップする場合がある。
 
-初期資料は2026-10-31時点のスナップショットから作成。以後の同期先は既定のGoogle Docs/Sheetsであり、ファイルIDを変更する場合はworkflowの環境変数を変更する。
+初期資料は2026-10-31時点のスナップショットから作成。以後の同期先はGitHub Actions Variables `GOOGLE_DOC_ID` と `GOOGLE_SHEET_ID` で指定できる。未設定時は2026-10-31版のファイルを読むため、継続更新元のIDを明示的に登録すること。
